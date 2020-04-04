@@ -26,9 +26,8 @@ const userForm = (props) => {
 					<Form.Label>Name</Form.Label>
 					<Form.Control
 						type="text"
-						placeholder="Enter name"
+						placeholder={props.editUser ? user.name : "Enter name"}
 						name="name"
-						defaultValue={props.editUser ? user.name : null}
 						onChange={props.inputChangeHandler}
 					/>
 					<Form.Text className="text-muted">
@@ -40,9 +39,8 @@ const userForm = (props) => {
 					<Form.Label>Age</Form.Label>
 					<Form.Control
 						type="number"
-						placeholder="Enter age"
+						placeholder={props.editUser ? user.age : "Enter age"}
 						name="age"
-						defaultValue={props.editUser ? user.age : null}
 						onChange={props.inputChangeHandler}
 					/>
 				</Form.Group>
@@ -52,8 +50,7 @@ const userForm = (props) => {
 					<Form.Control
 						type="text"
 						name="position"
-						defaultValue={props.editUser ? user.position : null}
-						placeholder="Position"
+						placeholder={props.editUser ? user.position : 'Enter position'}
 						onChange={props.inputChangeHandler}
 					/>
 				</Form.Group>

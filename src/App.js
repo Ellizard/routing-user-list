@@ -11,7 +11,6 @@ import AdminPage from './hoc/adminPage';
 import AdminFlow from './components/adminFlow/adminFlow';
 
 class App extends PureComponent {
-
 	state = {
 		isAdmin: null,
 		isModalOpen: false,
@@ -31,6 +30,7 @@ class App extends PureComponent {
 		],
 	};
 
+	// Toggle modal window.
 	switchModalHandler = () => {
 		const isModalOpen = this.state.isModalOpen;
 		this.setState({
@@ -38,6 +38,7 @@ class App extends PureComponent {
 		})
 	};
 
+	// Check and toggle localstorage with content.
 	switchToAdmin = () => {
 		const isAdmin = this.state.isAdmin;
 		if (localStorage.isAdmin === null || localStorage.isAdmin === "false") {
@@ -53,6 +54,7 @@ class App extends PureComponent {
 		}
 	};
 
+	// Change input handler.
 	inputChangeHandler = (event) => {
 		const target = event.target;
 		const value = target.value;
@@ -66,20 +68,43 @@ class App extends PureComponent {
 		});
 	};
 
+	// Create user.
 	createUserHandler = (event) => {
 		event.preventDefault();
-		const userData = {...this.state.inputValues};
+		const userData = {
+			name: this.state.inputValues.name,
+			age: +this.state.inputValues.age,
+			position: this.state.inputValues.position,
+		};
 		const users = [...this.state.users];
-		users.push(userData);
-		this.setState({
-			users:users
-		});
-		this.props.history.push('/');
+
+		// Check for empty fields.
+		if (
+			userData.name === undefined ||
+			userData.age === undefined ||
+			userData.position === undefined
+		) {
+			// Show error message, reset user form date and redirect.
+			alert('You should fill all fields');
+			this.setState({
+				inputValues: {}
+			});
+			this.props.history.push('/');
+		} else {
+			// Add new user and redirect to HP.
+			users.push(userData);
+			this.setState({
+				users:users
+			});
+			this.props.history.push('/');
+		}
 	};
 
+	// Update user info.
 	saveUserChangesHandler = (event) => {
 		event.preventDefault();
 
+		// Get current user id from location url.
 		const userID = this.props.location.pathname.replace( /^\D+/g, '');
 		const users = [...this.state.users];
 
@@ -87,7 +112,9 @@ class App extends PureComponent {
 		users[userID].age = +this.state.inputValues.age;
 		users[userID].position = this.state.inputValues.position;
 
+		// Update state.
 		this.setState({
+			inputValues: {},
 			users:users
 		});
 
@@ -102,6 +129,7 @@ class App extends PureComponent {
 		})
 	};
 
+	// Remove user.
 	userDeleteHandler = (index) => {
 		const users = [...this.state.users];
 		users.splice(index, 1);
@@ -193,8 +221,6 @@ class App extends PureComponent {
 				}}/>
 
 			</div>
-
-
 		)
 	}
 
